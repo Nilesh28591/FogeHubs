@@ -1,0 +1,6 @@
+@ForgeHubCreation_HostAddress = http://localhost:5208
+
+GET {{ForgeHubCreation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
