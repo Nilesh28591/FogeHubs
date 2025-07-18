@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form id="loginForm">
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<div id="result" class="mt-3"></div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').submit(function (e) {
+                e.preventDefault();
+
+                var loginData = {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                };
+
+                $.ajax({
+                    url: '/Auth/SubmitLogin',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(loginData),
+                    success: function (response) {
+                        $('#result').html('<div class="alert alert-success">Login successful. JWT Token: ' + response + '</div>');
+                    },
+                    error: function (xhr) {
+                        $('#result').html('<div class="alert alert-danger">Login failed: ' + xhr.responseText + '</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}

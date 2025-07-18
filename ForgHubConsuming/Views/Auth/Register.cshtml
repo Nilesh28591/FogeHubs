@@ -1,0 +1,52 @@
+﻿@using ForgHubConsuming.Dto
+@model RegistorDto
+
+<h2>Register</h2>
+<form id="registerForm">
+    <input type="text" name="FirstName" placeholder="First Name" required />
+    <input type="text" name="LastName" placeholder="Last Name" required />
+    <input type="email" name="Email" placeholder="Email" required />
+    <input type="password" name="Password" placeholder="Password" required />
+    <input type="text" name="PhoneNumber" placeholder="Phonenumber" required />
+    <select name="Role" required>
+        <option value="">Select Role</option>
+        <option value="Buyer">Buyer</option>
+        <option value="Vendor">Vendor</option>
+    </select>
+    <button type="submit">Register</button>
+</form>
+
+<div id="message"></div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#registerForm").submit(function (e) {
+            e.preventDefault();
+                    var formData = {
+            FirstName: $("input[name='FirstName']").val(),
+            LastName: $("input[name='LastName']").val(),
+            Email: $("input[name='Email']").val(),
+            PasswordHash: $("input[name='Password']").val(),
+            PhoneNumber: $("input[name='PhoneNumber']").val(),
+            Role: $("select[name='Role']").val()
+        };
+
+        $.ajax({
+            url: '@Url.Action("Register", "Auth")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                $("#message").html(response.message);
+                if (response.success) {
+                    $("#registerForm")[0].reset();
+                }
+            },
+            error: function () {
+                $("#message").html("An error occurred.");
+            }
+        });
+        });
+    </script>
+}
